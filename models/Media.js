@@ -31,7 +31,7 @@ const Media = sequelize.define('Media', {
     type: DataTypes.STRING(100),
     allowNull: false,
   },
-  yearTime: {
+  year_time: {
     type: DataTypes.STRING(100),
     allowNull: false,
     field: 'year_time',
@@ -40,11 +40,11 @@ const Media = sequelize.define('Media', {
     type: DataTypes.TEXT,
     allowNull: true,
   },
-  // imageUrl: {
-  //   type: DataTypes.STRING(500),
-  //   allowNull: true,
-  //   field: 'image_url',
-  // },
+  imageUrl: {
+    type: DataTypes.STRING(500),
+    allowNull: true,
+    field: 'image_url',
+  },
 }, {
   tableName: 'media',
   timestamps: true,

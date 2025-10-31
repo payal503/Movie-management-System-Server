@@ -46,8 +46,21 @@ export const getMediaById = async (req, res, next) => {
 
 export const createMedia = async (req, res, next) => {
   try {
-    const mediaData = req.body;
-    
+    const mediaData = {
+      title: req.body.title,
+      type: req.body.type,
+      director: req.body.director,
+      budget: req.body.budget,
+      location: req.body.location,
+      duration: req.body.duration,
+      year_time: req.body.year_time,
+      description: req.body.description || null,
+    };
+
+    if (req.file) {
+      mediaData.imageUrl = `/uploads/${req.file.filename}`;
+    }
+
     const media = await Media.create(mediaData);
 
     res.status(201).json({
@@ -62,7 +75,21 @@ export const createMedia = async (req, res, next) => {
 export const updateMedia = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const updateData = req.body;
+
+    const updateData = {
+      title: req.body.title,
+      type: req.body.type,
+      director: req.body.director,
+      budget: req.body.budget,
+      location: req.body.location,
+      duration: req.body.duration,
+      year_time: req.body.year_time,
+      description: req.body.description || null,
+    };
+
+    if (req.file) {
+      updateData.imageUrl = `/uploads/${req.file.filename}`;
+    }
 
     const media = await Media.findByPk(id);
 
@@ -106,4 +133,3 @@ export const deleteMedia = async (req, res, next) => {
     next(error);
   }
 };
-

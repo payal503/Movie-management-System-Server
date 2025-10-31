@@ -7,23 +7,30 @@ import {
   deleteMedia,
 } from '../controllers/mediaController.js';
 import { validate, mediaCreateSchema, mediaUpdateSchema } from '../middleware/validation.js';
+import upload from '../middleware/upload.js';
 
 const router = express.Router();
 
-// router.use((req, res, next) => {
-//   console.log('=== REQUEST DEBUG ===');
-//   console.log('Method:', req.method);
-//   console.log('URL:', req.url);
-//   console.log('Headers:', req.headers);
-//   console.log('Body:', req.body);
-//   console.log('=== END DEBUG ===');
-//   next();
-// });
-
 router.get('/', getAllMedia);
 router.get('/:id', getMediaById);
-router.post('/', validate(mediaCreateSchema), createMedia);
-router.put('/:id', validate(mediaUpdateSchema), updateMedia);
+
+router.post('/',
+  upload.single('poster'),
+  (req, res, next) => {
+    console.log('File upload middleware - File:', req.file);
+    console.log('File upload middleware - Body:', req.body);
+    next();
+  },
+  validate(mediaCreateSchema),
+  createMedia
+);
+
+router.put('/:id',
+  upload.single('poster'),
+  validate(mediaUpdateSchema),
+  updateMedia
+);
+
 router.delete('/:id', deleteMedia);
 
 export default router;
