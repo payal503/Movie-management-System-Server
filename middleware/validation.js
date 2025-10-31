@@ -7,7 +7,7 @@ export const mediaCreateSchema = yup.object({
   budget: yup.string().required('Budget is required').max(100),
   location: yup.string().required('Location is required').max(255),
   duration: yup.string().required('Duration is required').max(100),
-  yearTime: yup.string().required('Year/Time is required').max(100),
+  year_time: yup.string().required('Year/Time is required'),
   description: yup.string().max(1000),
   imageUrl: yup.string().url().optional(),
 });
@@ -19,7 +19,7 @@ export const mediaUpdateSchema = yup.object({
   budget: yup.string().max(100),
   location: yup.string().max(255),
   duration: yup.string().max(100),
-  yearTime: yup.string().max(100),
+  year_time: yup.string(),
   description: yup.string().max(1000),
   imageUrl: yup.string().url().optional(),
 });

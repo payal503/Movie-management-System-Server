@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import sequelize from './config/database.js';
 import mediaRoutes from './routes/router.js';
 import { notFound, errorHandler } from './middleware/errorHandler.js';
-import { ensureUploadsDir } from './utils/fileUtils.js'; // Add this import
+import { ensureUploadsDir } from './utils/fileUtils.js'; 
 
 import './models/Media.js';
 
@@ -20,22 +20,13 @@ app.use(cors({
   credentials: true,
 }));
 
-app.use(express.json({ 
-  limit: '10mb',
-}));
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/uploads', express.static('uploads'));
 
 app.use('/api/media', mediaRoutes);
 
-app.get('/health', (req, res) => {
-  res.json({
-    success: true,
-    message: 'Server is running',
-    timestamp: new Date().toISOString(),
-  });
-});
 
 app.use(notFound);
 app.use(errorHandler);
@@ -43,7 +34,7 @@ app.use(errorHandler);
 const startServer = async () => {
   try {
     await sequelize.authenticate();
-    console.log('✅ Database connection established successfully.');
+    console.log('Database connection established successfully.');
 
     try {
       const [results] = await sequelize.query(`
@@ -54,25 +45,25 @@ const startServer = async () => {
       `);
 
       if (results.length === 0) {
-        console.log('🔄 Adding image_url column to media table...');
+        console.log('Adding image_url column to media table...');
         await sequelize.query(`
           ALTER TABLE media 
           ADD COLUMN image_url VARCHAR(500) NULL
         `);
-        console.log('✅ image_url column added successfully.');
+        console.log('image_url column added successfully.');
       }
     } catch (error) {
-      console.log('ℹ️  image_url column already exists or error:', error.message);
+      console.log('image_url column already exists or error:', error.message);
     }
 
     await sequelize.sync({ force: false });
-    console.log('✅ Database synchronized.');
+    console.log('Database synchronized.');
 
     app.listen(PORT, () => {
       console.log(`Server is running on http://localhost:${PORT}`);
     });
   } catch (error) {
-    console.error('❌ Unable to connect to the database:', error);
+    console.error('Unable to connect to the database:', error);
     process.exit(1);
   }
 };
